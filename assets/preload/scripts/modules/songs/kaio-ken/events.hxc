@@ -1,0 +1,12 @@
+class KaioKenEvents extends SongModule
+{
+    public function new()
+    {
+        super('kaio-ken-events', 0, 'kaio-ken');
+    }
+
+	function onNoteSpawn(e:NoteScriptEvent)
+	{
+		trace('The note\'s direction is ' + e.note.direction);
+	}
+}

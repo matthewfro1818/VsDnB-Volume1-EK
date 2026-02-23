@@ -1,0 +1,22 @@
+{
+   "version": "2.0.0",
+   "songName": "Kaio-Ken",
+   "composers": ["I Don' know"],
+   "artists": ["I Don' know"],
+   "charters": ["I Don' know"],
+   "coders": ["I Don' know"],
+   "variations": [],
+   "stage": "house",
+   "player": "bf",
+   "opponent": "dave",
+   "gf": "gf",
+   "timeChanges": [
+      {
+         "time": 0,
+         "bpm": 200,
+         "numerator": 4,
+         "denominator": 4
+      }
+   ],
+   "keyCount": 6
+}

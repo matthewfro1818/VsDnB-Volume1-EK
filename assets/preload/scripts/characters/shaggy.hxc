@@ -1,0 +1,61 @@
+class ShaggyCharacter extends Character
+{
+    var directions:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
+    var playerColor:FlxColor;
+    var blueColor:FlxColor = FlxColor.fromRGB(40, 40, 240); // I still don't know why you didnt make this a var 
+
+    public function new()
+    {
+        super('shaggy');
+    }
+
+    public override function load():Void
+    {
+        frames = Paths.getSparrowAtlas('characters/shaggy/shaggy', 'shared');
+
+        animation.addByPrefix('danceLeft', 'shaggy_idle0', 30, false);
+        animation.addByPrefix('danceRight', 'shaggy_idle2', 30, false);
+        animation.addByPrefix('hey', 'shaggy_up0', 30, false);
+        for (anim in ['left', 'down', 'up', 'right'])
+        {
+            animation.addByPrefix('sing' + anim.toUpperCase(), 'shaggy_' + anim + '0', 30, false);
+        }
+
+        skins.set('3d', 'shaggy-3d');
+        skins.set('deathSkin', 'shaggy-lose');
+
+        danceTypes = ['alternate'];
+        playAnim('danceRight');
+    }
+
+    override function update(e:UpdateScriptEvent)
+    {
+        super.update(e);
+
+        if ((playerColor != color && color != blueColor))
+        {
+            playerColor = color;
+        }
+        if (color != playerColor && !directions.contains(animation.curAnim.name))
+        {
+            color = playerColor;
+        }
+    }
+
+    override function onNoteMiss(e:NoteScriptEvent)
+    {
+        sing(e.note.direction);
+        color = blueColor;
+    }
+
+    override function onHoldNoteDrop(e:HoldNoteScriptEvent)
+    {
+        sing(e.holdNote.direction);
+        color = blueColor;        
+    }
+
+    override function onPlayerNoteHit(e:NoteScriptEvent) 
+    {
+        color = playerColor;
+    }
+}

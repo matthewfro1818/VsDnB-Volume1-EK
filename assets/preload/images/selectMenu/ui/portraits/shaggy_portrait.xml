@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="shaggy_portrait.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="unselected_shag0001" x="236" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitionu_shag0001" x="236" y="0" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitionu_shag0002" x="236" y="0" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitionu_shag0003" x="0" y="0" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitionu_shag0004" x="0" y="0" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitionu_shag0005" x="0" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitionu_shag0006" x="0" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitions_shag0001" x="0" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitions_shag0002" x="0" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitions_shag0003" x="472" y="0" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitions_shag0004" x="472" y="0" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitions_shag0005" x="472" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="transitions_shag0006" x="472" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+	<SubTexture name="selected_shag0001" x="0" y="221" width="236" height="221" frameX="2" frameY="1" frameWidth="232" frameHeight="218"/>
+</TextureAtlas>

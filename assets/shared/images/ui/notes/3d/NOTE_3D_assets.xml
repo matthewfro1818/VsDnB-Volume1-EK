@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="NOTE_3D_assets.png">
+	<!-- Created with Adobe Animate version 21.0.8.42666 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="blue0000" x="0" y="0" width="157" height="164"/>
+	<SubTexture name="cobalt0000" x="157" y="0" width="169" height="179"/>
+	<SubTexture name="crimson0000" x="326" y="0" width="161" height="226"/>
+	<SubTexture name="emerald0000" x="487" y="0" width="168" height="184"/>
+	<SubTexture name="green0000" x="655" y="0" width="157" height="163"/>
+	<SubTexture name="lightred0000" x="812" y="0" width="174" height="173"/>
+	<SubTexture name="pink0000" x="0" y="226" width="178" height="178"/>
+	<SubTexture name="purple0000" x="178" y="226" width="159" height="169"/>
+	<SubTexture name="red0000" x="337" y="226" width="161" height="169"/>
+	<SubTexture name="turq0000" x="498" y="226" width="169" height="183"/>
+	<SubTexture name="violet0000" x="667" y="226" width="160" height="199"/>
+	<SubTexture name="white0000" x="827" y="226" width="171" height="187"/>
+	<SubTexture name="yellow0000" x="0" y="425" width="165" height="178"/>
+</TextureAtlas>

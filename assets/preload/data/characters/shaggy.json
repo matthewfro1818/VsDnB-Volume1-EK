@@ -1,0 +1,20 @@
+{
+   "version": "1.0.0",
+   "name": "Shaggy",
+   "scale": 1,
+   "danceSnap": 2,
+   "globalOffset": [50, -350],
+   "cameraOffsets": [0, -100],
+   "offsetFilePlayer": "shaggy",
+   "offsetFileOpponent": "shaggy",
+   "icon": "shaggy",
+   "singDuration": 6,
+   "color": "0x33724A",
+   "nativelyPlayable": false,
+   "flipX": false,
+   "antialiasing": true,
+   "countdownData": {
+      "graphicPath": "normal",
+      "soundPath": "default"
+   }
+}

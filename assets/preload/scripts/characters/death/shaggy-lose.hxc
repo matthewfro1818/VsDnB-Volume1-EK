@@ -1,0 +1,40 @@
+class ShaggyLoseCharacter extends Character
+{
+    public function new()
+    {
+        super('shaggy-lose');
+    }
+
+    override function onCreate(e:ScriptEvent)
+    {
+        super.onCreate(e);
+
+        GameOverSubstate.deathSuffix = '-shaggy';
+
+		animation.onFinish.add((anim:String) -> 
+		{
+			if (anim == 'firstDeath')
+			{
+				bf.playAnim('deathLoopRight', true);
+				SoundController.playMusic(gameOverMusic);
+			}
+		});
+    }
+
+    override function load():Void
+    {
+        frames = Paths.getSparrowAtlas('characters/shaggy/shaggy_gameover', 'shared');
+        
+        animation.addByPrefix('firstDeath', "shaggy_lose_start", 24, false); 
+        animation.addByPrefix('deathLoopLeft', 'shaggy_lose_loop2', 24, false);
+        animation.addByPrefix('deathLoopRight', 'shaggy_lose_loop1', 24, false);
+        animation.addByPrefix('deathConfirm', "shaggy_lose_retry", 30, false);
+
+        skins.set('3d', 'shaggy-3d');
+    }
+
+    override function beatHit(beat:Int)
+    {
+		if (beat % 2 == 0) playAnim('deathLoopRight', true); else playAnim('deathLoopLeft', true);
+    }
+}

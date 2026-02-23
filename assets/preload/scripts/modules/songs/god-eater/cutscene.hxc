@@ -1,0 +1,151 @@
+import flixel.math.FlxBasePoint;
+
+class GodEaterCutscene extends SongModule
+{
+	var sh_r:Float = 600;
+
+	var godMoveBf:Bool = false;
+	var godMoveSh:Bool = false;
+
+    var derp:Float = 12;
+    var curStep:Int = 0;
+
+    var rock:BGSprite;
+    var ghostTrail:Character;
+
+    public function new()
+    {
+        super('godEaterCutscene', 0, 'god-eater');
+    }
+
+    function onCreate(e:ScriptEvent)
+    {
+        if (Preferences.cutscenes)
+        {
+            game.startCallback = () -> {
+			    godIntro();
+            }
+		}
+    }
+
+    function onCreatePost(e:ScriptEvent)
+    {
+        rock = game.currentStage.getProp('rock'); 
+    }
+
+	function godIntro()
+	{
+        game.dad.canDance = false;
+        game.boyfriend.canDance = false;
+		new FlxTimer().start(3, function(tmr:FlxTimer)
+		{
+			game.dad.playAnim('idle', true);
+			new FlxTimer().start(0.85, function(tmr2:FlxTimer)
+			{
+				SoundController.play(Paths.sound('snap'));
+				SoundController.play(Paths.sound('undSnap'));
+				new FlxTimer().start(0.06, function(tmr3:FlxTimer)
+				{
+					game.dad.playAnim('singUP', true);
+				});
+				new FlxTimer().start(1.5, function(tmr4:FlxTimer)
+				{
+					new FlxTimer().start(0.001, function(shkUp:FlxTimer)
+					{
+                        game.dad.canDance = true;
+					});
+					new FlxTimer().start(1, function(tmr5:FlxTimer)
+					{
+						SoundController.play(Paths.sound('ascend'));
+						game.boyfriend.playAnim('hit', true);
+						this.godMoveBf = true;
+						new FlxTimer().start(0.4, function(tmr6:FlxTimer)
+						{
+							game.boyfriend.playAnim('hit');
+						});
+						new FlxTimer().start(1, function(tmr9:FlxTimer)
+						{
+							game.boyfriend.playAnim('scared', true);
+						});
+						new FlxTimer().start(2, function(tmr7:FlxTimer)
+						{
+							this.godMoveSh = true;
+							game.dad.playAnim('idle', true);
+							SoundController.play(Paths.sound('shagFly'));
+							new FlxTimer().start(1.5, function(tmr8:FlxTimer)
+							{
+								game.camGame.followPoint = new FlxBasePoint(game.dad.cameraFocusPoint.x, game.dad.cameraFocusPoint.y);
+                                game.boyfriend.canDance = true;
+								game.startCountdown();
+							});
+						});
+					});
+				});	
+			});
+		});
+	}
+
+	function onUpdate(e:UpdateScriptEvent)
+	{
+		var rotRate = curStep * 0.25;
+		var rotRateSh = curStep / 9.5;
+
+		if (godMoveBf)
+		{
+            var bf_toy = -2000 + Math.sin(rotRate) * 20;
+
+			game.boyfriend.y += (bf_toy - game.boyfriend.y) / derp;
+		    rock.x = game.boyfriend.x - 300;
+			rock.y = game.boyfriend.y + 300;
+			if (rock.alpha < 1)
+			    rock.alpha = 1;
+		}
+		if (godMoveSh) 
+		{
+	        var sh_toy = -2450 + -Math.sin(rotRateSh * 2) * sh_r * 0.45;
+	        var sh_tox = -330 -Math.cos(rotRateSh) * sh_r;
+			
+			if (Conductor.instance.curStep < 127)
+	        	game.dad.y += (sh_toy - game.dad.y) / 12;
+			else {
+		        game.dad.x += (sh_tox - game.dad.x) / 12;
+	    	    game.dad.y += (sh_toy - game.dad.y) / 12;
+			}
+		}
+	}
+
+	function onStepHit(e:ConductorScriptEvent) 
+	{
+        curStep = e.step;
+		
+		if (godMoveSh)
+		{
+            ghostTrail = Character.create(game.dad.x, game.dad.y, game.dad.id, game.dad.characterType);
+            ghostTrail.alpha = 0.3;
+			ghostTrail.zIndex = game.dad.zIndex - 0.1;
+		    game.currentStage.moveSpriteToStage(ghostTrail, game.currentStage, game.dad.getPosition()); // Tried setting zIndex, didnt work so had to do this
+			if (ghostTrail != null)
+			{
+ 			    ghostTrail.playAnim(game.dad.animation.name, true);
+	            ghostTrail.animation.curAnim.curFrame = game.dad.animation.curAnim.curFrame;
+                new FlxTimer().start(0.3, function(tmr:FlxTimer) 
+			    { 
+			    	game.currentStage.remove(ghostTrail, true); 
+			        ghostTrail.destroy(); 
+				    tmr.destroy(); 
+			    }); // Yes I know, I'm clinically insane for this! But FlxTrail isnt able to be imported (for now probably!)
+			}
+
+			if (Conductor.instance.curStep > 127) ghostTrail.visible = true; else ghostTrail.visible = false;
+		}
+	}
+
+    function destroy()
+	{
+		if (ghostTrail != null)
+		{
+			ghostTrail.destroy();
+			ghostTrail = null;
+		}
+	}
+} 

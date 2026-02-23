@@ -1,0 +1,31 @@
+{
+   "version": "1.0.0",
+   "name": "Shaggy",
+   "charId": "shaggy",
+   "variationId": "shaggy",
+   "charSelect": {
+      "gf": "shaggy",
+      "page": 0,
+      "portraitFile": "shaggy_portrait",
+      "position": 8,
+      "selected": {
+         "loop": true,
+         "name": "idle_select",
+         "prefix": "selected_shag"
+      },
+      "selectedTransition": {
+         "name": "selected",
+         "prefix": "transitions_shag"
+      },
+      "unselected": {
+         "loop": true,
+         "name": "idle_unselect",
+         "prefix": "unselected_shag"
+      },
+      "unselectedTransition": {
+         "name": "idle",
+         "prefix": "transitionu_shag"
+      }
+   },
+   "unlocked": true
+}

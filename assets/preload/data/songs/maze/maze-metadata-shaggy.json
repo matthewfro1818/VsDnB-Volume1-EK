@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "songName": "Maze",
+  "composers": [
+    "Unknown Composer"
+  ],
+  "artists": [
+    "Unknown Artists"
+  ],
+  "charters": [
+    "Unknown Charters"
+  ],
+  "coders": [
+    "Unknown Coders"
+  ],
+  "variations": [],
+  "stage": "farm",
+  "player": "shaggy",
+  "opponent": "bambi-new",
+  "gf": "gf",
+  "timeChanges": [
+    {
+      "time": 0,
+      "bpm": 113,
+      "numerator": 4,
+      "denominator": 4
+    },
+    {
+      "time": 155044.247787611,
+      "bpm": 98,
+      "numerator": 4,
+      "denominator": 4
+    }
+  ],
+  "keyCount":9
+}

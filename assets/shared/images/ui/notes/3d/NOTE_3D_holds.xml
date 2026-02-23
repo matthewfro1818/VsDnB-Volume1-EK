@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="NOTE_3D_holds.png">
+	<!-- Created with Adobe Animate version 21.0.8.42666 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="blue hold end0000" x="0" y="0" width="49" height="77"/>
+	<SubTexture name="blue hold piece0000" x="49" y="0" width="49" height="40"/>
+	<SubTexture name="cobalt hold end0000" x="98" y="0" width="64" height="62"/>
+	<SubTexture name="cobalt hold piece0000" x="162" y="0" width="65" height="42"/>
+	<SubTexture name="crimson hold end0000" x="227" y="0" width="48" height="77"/>
+	<SubTexture name="crimson hold piece0000" x="275" y="0" width="48" height="41"/>
+	<SubTexture name="emerald hold end0000" x="323" y="0" width="50" height="75"/>
+	<SubTexture name="emerald hold piece0000" x="373" y="0" width="49" height="40"/>
+	<SubTexture name="green hold end0000" x="422" y="0" width="49" height="77"/>
+	<SubTexture name="green hold piece0000" x="0" y="77" width="49" height="41"/>
+	<SubTexture name="lightred hold end0000" x="49" y="77" width="64" height="61"/>
+	<SubTexture name="lightred hold piece0000" x="113" y="77" width="66" height="41"/>
+	<SubTexture name="pink hold end0000" x="179" y="77" width="68" height="63"/>
+	<SubTexture name="pink hold piece0000" x="247" y="77" width="67" height="41"/>
+	<SubTexture name="pruple end hold0000" x="314" y="77" width="68" height="62"/>
+	<SubTexture name="purple hold piece0000" x="382" y="77" width="68" height="41"/>
+	<SubTexture name="red hold end0000" x="0" y="140" width="66" height="62"/>
+	<SubTexture name="red hold piece0000" x="66" y="140" width="66" height="41"/>
+	<SubTexture name="turq hold end0000" x="132" y="140" width="50" height="76"/>
+	<SubTexture name="turq hold piece0000" x="182" y="140" width="49" height="40"/>
+	<SubTexture name="violet hold end0000" x="231" y="140" width="46" height="76"/>
+	<SubTexture name="violet hold piece0000" x="277" y="140" width="46" height="41"/>
+	<SubTexture name="white hold end0000" x="323" y="140" width="49" height="76"/>
+	<SubTexture name="white hold piece0000" x="372" y="140" width="44" height="40"/>
+	<SubTexture name="yellow hold end0000" x="416" y="140" width="67" height="63"/>
+	<SubTexture name="yellow hold piece0000" x="0" y="216" width="67" height="39"/>
+</TextureAtlas>
