@@ -297,6 +297,11 @@ class PlayState extends MusicBeatState
 	private var botplayHoldingNotes:Array<Bool> = [];
 
 	/**
+	 * Tracks the end time of sustain notes being held during botplay.
+	 */
+	private var botplaySustainEndTimes:Array<Float> = [];
+
+	/**
 	 * Whether botplay should press the key5 button for shape notes.
 	 */
 	private var botplayPressKey5:Bool = false;
@@ -1778,6 +1783,7 @@ class PlayState extends MusicBeatState
 			for (i in 0...Strumline.strumAmount)
 			{
 				botplayHoldingNotes.push(false);
+				botplaySustainEndTimes.push(0.0);
 			}
 		}
 		
@@ -1824,38 +1830,30 @@ class PlayState extends MusicBeatState
 				if (note.sustainNote != null)
 				{
 					botplayHoldingNotes[noteDirection] = true;
+					botplaySustainEndTimes[noteDirection] = noteEndTime;
 				}
 			}
 		}
 		
-		// Handle release of keys that were being held
+		// Handle sustain notes that are already being held (might not be in possibleNotes anymore)
 		for (i in 0...botplayHoldingNotes.length)
 		{
 			if (botplayHoldingNotes[i])
 			{
-				// Check if there are any active sustain notes in this direction that should still be held
-				var shouldStillHold:Bool = false;
+				var sustainEndTime:Float = botplaySustainEndTimes[i];
 				
-				for (note in possibleNotes)
+				// Check if sustain is still active
+				if (currentSongPosition < sustainEndTime)
 				{
-					if ((note.direction % Strumline.strumAmount) == i && note.sustainNote != null)
-					{
-						var noteEndTime:Float = note.strumTime + note.sustainNote.sustainLength;
-						
-						// Still holding if we're before the sustain ends
-						if (currentSongPosition < noteEndTime)
-						{
-							shouldStillHold = true;
-							break;
-						}
-					}
+					// Keep holding the key
+					controlArray[i] = true;
 				}
-				
-				// Release if no sustains should be held
-				if (!shouldStillHold)
+				else
 				{
+					// Release the key when sustain ends
 					releaseArray[i] = true;
 					botplayHoldingNotes[i] = false;
+					botplaySustainEndTimes[i] = 0.0;
 				}
 			}
 		}
