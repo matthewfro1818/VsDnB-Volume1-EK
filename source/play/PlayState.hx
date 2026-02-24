@@ -1754,14 +1754,72 @@ class PlayState extends MusicBeatState
 	 * @param controlArray The array to populate with key presses.
 	 * @param releaseArray The array to populate with key releases.
 	 */
-		// Handle botplay input simulation (after switch to properly override control arrays)
-		// Temporarily disabled for debugging
-		/*
-		if (botplay && generatedMusic && !startingSong)
+	private function handleBotplayInputs(controlArray:Array<Bool>, releaseArray:Array<Bool>):Void
+	{
+		// Reset all controls for botplay
+		for (i in 0...controlArray.length)
 		{
-			handleBotplayInputs(controlArray, releaseArray);
+			controlArray[i] = false;
+			releaseArray[i] = false;
 		}
-		*/
+		
+		var possibleNotes:Array<Note> = playingStrumline.getPossibleNotes();
+		
+		// Initialize botplayHoldingNotes if needed
+		if (botplayHoldingNotes.length == 0)
+		{
+			for (i in 0...Strumline.strumAmount)
+			{
+				botplayHoldingNotes.push(false);
+			}
+		}
+		
+		// Check all possible notes to see which ones should be pressed
+		for (note in possibleNotes)
+		{
+			var noteDirection:Int = note.direction % Strumline.strumAmount;
+			var noteTiming:Float = note.strumTime;
+			
+			// Check if the note is within the hit window (safe zone)
+			if (noteTiming <= Conductor.instance.songPosition + Conductor.instance.safeZoneOffset * 0.5)
+			{
+				// Press the key for this note
+				controlArray[noteDirection] = true;
+
+				// If it's a sustain note, mark it as being held
+				if (note.sustainNote != null)
+				{
+					botplayHoldingNotes[noteDirection] = true;
+				}
+			}
+		}
+		
+		// Handle release of sustained notes that have ended
+		for (i in 0...botplayHoldingNotes.length)
+		{
+			if (botplayHoldingNotes[i])
+			{
+				// Check if there are any held notes still active in this direction
+				var hasActiveSustain:Bool = false;
+				
+				for (note in possibleNotes)
+				{
+					if ((note.direction % Strumline.strumAmount) == i && note.sustainNote != null)
+					{
+						hasActiveSustain = true;
+						break;
+					}
+				}
+				
+				// If no active sustain in this direction, release the key
+				if (!hasActiveSustain)
+				{
+					releaseArray[i] = true;
+					botplayHoldingNotes[i] = false;
+				}
+			}
+		}
+	}
 
 	/**
 	 * Handles all necessary inputs.
@@ -1812,36 +1870,33 @@ class PlayState extends MusicBeatState
 		switch(Strumline.strumAmount)
 		{
 			case 5:
-		        controlArray = [leftP, downP, spaceP, upP, rightP];
-		        releaseArray = [leftR, downR, spaceR, upR, rightR];
+				controlArray = [leftP, downP, spaceP, upP, rightP];
+				releaseArray = [leftR, downR, spaceR, upR, rightR];
 			case 6:
-		        controlArray = [leftP, upP, rightP, second_leftP, downP, second_rightP];
-		        releaseArray = [leftR, upR, rightR, second_leftR, downR, second_rightR];
+				controlArray = [leftP, upP, rightP, second_leftP, downP, second_rightP];
+				releaseArray = [leftR, upR, rightR, second_leftR, downR, second_rightR];
 			case 7:
-		        controlArray = [leftP, upP, rightP, spaceP, second_leftP, downP, second_rightP];
-		        releaseArray = [leftR, upR, rightR, spaceR, second_leftR, downR, second_rightR];
+				controlArray = [leftP, upP, rightP, spaceP, second_leftP, downP, second_rightP];
+				releaseArray = [leftR, upR, rightR, spaceR, second_leftR, downR, second_rightR];
 			case 8:
-		        controlArray = [leftP, downP, upP, rightP, second_leftP, second_downP, second_upP, second_rightP];
-		        releaseArray = [leftR, downR, upR, rightR, second_leftR, second_downR, second_upR, second_rightR];
+				controlArray = [leftP, downP, upP, rightP, second_leftP, second_downP, second_upP, second_rightP];
+				releaseArray = [leftR, downR, upR, rightR, second_leftR, second_downR, second_upR, second_rightR];
 			case 9:
-		        controlArray = [leftP, downP, upP, rightP, spaceP, second_leftP, second_downP, second_upP, second_rightP];
-		        releaseArray = [leftR, downR, upR, rightR, spaceR, second_leftR, second_downR, second_upR, second_rightR];
+				controlArray = [leftP, downP, upP, rightP, spaceP, second_leftP, second_downP, second_upP, second_rightP];
+				releaseArray = [leftR, downR, upR, rightR, spaceR, second_leftR, second_downR, second_upR, second_rightR];
 			case 12:
-		        controlArray = [leftP, downP, upP, rightP, third_leftP, third_downP, third_upP, third_rightP, second_leftP, second_downP, second_upP, second_rightP]; 
-		        releaseArray = [leftR, downR, upR, rightR, third_leftR, third_downR, third_upR, third_rightR, second_leftR, second_downR, second_upR, second_rightR];
+				controlArray = [leftP, downP, upP, rightP, third_leftP, third_downP, third_upP, third_rightP, second_leftP, second_downP, second_upP, second_rightP]; 
+				releaseArray = [leftR, downR, upR, rightR, third_leftR, third_downR, third_upR, third_rightR, second_leftR, second_downR, second_upR, second_rightR];
 			default:
-		        controlArray = [leftP, downP, upP, rightP]; 
-		        releaseArray = [leftR, downR, upR, rightR];
+				controlArray = [leftP, downP, upP, rightP]; 
+				releaseArray = [leftR, downR, upR, rightR];
 		}
 
 		// Handle botplay input simulation (after switch to properly override control arrays)
-		// Temporarily disabled for debugging
-		/*
 		if (botplay && generatedMusic && !startingSong)
 		{
 			handleBotplayInputs(controlArray, releaseArray);
 		}
-		*/
 
 		if (pressingKey5Global != key5)
 		{
