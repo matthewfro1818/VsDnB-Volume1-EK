@@ -296,6 +296,11 @@ class PlayState extends MusicBeatState
 	 */
 	private var botplayHoldingNotes:Array<Bool> = [];
 
+	/**
+	 * Whether botplay should press the key5 button for shape notes.
+	 */
+	private var botplayPressKey5:Bool = false;
+
 
 
 	// DISPLAYS //
@@ -1764,6 +1769,8 @@ class PlayState extends MusicBeatState
 		}
 		
 		var possibleNotes:Array<Note> = playingStrumline.getPossibleNotes();
+		var currentSongPosition:Float = Conductor.instance.songPosition;
+		var hasShapeNotes:Bool = shapeNoteSongs.contains(currentSong.id.toLowerCase());
 		
 		// Initialize botplayHoldingNotes if needed
 		if (botplayHoldingNotes.length == 0)
@@ -1774,19 +1781,46 @@ class PlayState extends MusicBeatState
 			}
 		}
 		
+		// Track if any shape notes need to be hit right now
+		botplayPressKey5 = false;
+		for (note in possibleNotes)
+		{
+			if (hasShapeNotes && note.noteStyle == 'shape')
+			{
+				var noteEndTime:Float = note.strumTime;
+				if (note.sustainNote != null)
+				{
+					noteEndTime += note.sustainNote.sustainLength;
+				}
+				
+				// Press key5 if we're hitting a shape note
+				if (currentSongPosition >= note.strumTime && currentSongPosition < noteEndTime + Conductor.instance.safeZoneOffset)
+				{
+					botplayPressKey5 = true;
+					break;
+				}
+			}
+		}
+		
 		// Check all possible notes to see which ones should be pressed
 		for (note in possibleNotes)
 		{
 			var noteDirection:Int = note.direction % Strumline.strumAmount;
 			var noteTiming:Float = note.strumTime;
+			var noteEndTime:Float = noteTiming;
 			
-			// Check if the note is within the hit window (safe zone)
-			if (noteTiming <= Conductor.instance.songPosition + Conductor.instance.safeZoneOffset * 0.5)
+			// If this note has a sustain, calculate the end time
+			if (note.sustainNote != null)
 			{
-				// Press the key for this note
+				noteEndTime = noteTiming + note.sustainNote.sustainLength;
+			}
+			
+			// Press the key if we're at or past the note's timing but before it ends
+			if (currentSongPosition >= noteTiming && currentSongPosition < noteEndTime + Conductor.instance.safeZoneOffset)
+			{
 				controlArray[noteDirection] = true;
-
-				// If it's a sustain note, mark it as being held
+				
+				// Mark as holding a sustain if this note has a sustain
 				if (note.sustainNote != null)
 				{
 					botplayHoldingNotes[noteDirection] = true;
@@ -1794,25 +1828,31 @@ class PlayState extends MusicBeatState
 			}
 		}
 		
-		// Handle release of sustained notes that have ended
+		// Handle release of keys that were being held
 		for (i in 0...botplayHoldingNotes.length)
 		{
 			if (botplayHoldingNotes[i])
 			{
-				// Check if there are any held notes still active in this direction
-				var hasActiveSustain:Bool = false;
+				// Check if there are any active sustain notes in this direction that should still be held
+				var shouldStillHold:Bool = false;
 				
 				for (note in possibleNotes)
 				{
 					if ((note.direction % Strumline.strumAmount) == i && note.sustainNote != null)
 					{
-						hasActiveSustain = true;
-						break;
+						var noteEndTime:Float = note.strumTime + note.sustainNote.sustainLength;
+						
+						// Still holding if we're before the sustain ends
+						if (currentSongPosition < noteEndTime)
+						{
+							shouldStillHold = true;
+							break;
+						}
 					}
 				}
 				
-				// If no active sustain in this direction, release the key
-				if (!hasActiveSustain)
+				// Release if no sustains should be held
+				if (!shouldStillHold)
 				{
 					releaseArray[i] = true;
 					botplayHoldingNotes[i] = false;
@@ -1862,7 +1902,7 @@ class PlayState extends MusicBeatState
 		var third_downR = controls.THIRD_DOWN_R;
 		var third_leftR = controls.THIRD_LEFT_R;
 
-		var key5 = controls.KEY5 && shapeNoteSongs.contains(currentSong.id.toLowerCase());
+		var key5 = (controls.KEY5 || (botplay && botplayPressKey5)) && shapeNoteSongs.contains(currentSong.id.toLowerCase());
 
 		var controlArray:Array<Bool> = [leftP, downP, upP, rightP]; // better to declare them or something bad might happen
 		var releaseArray:Array<Bool> = [leftR, downR, upR, rightR];
